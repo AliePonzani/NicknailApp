@@ -14,30 +14,37 @@ struct ButtonNext: View {
     @Binding var counter: Int
     var geometry: GeometryProxy
     var body: some View {
-            Button(action: {
-                if counter != 0 {
-                    if operation == "add" {
-                        counter += 1
-                    } else if operation == "subtract" {
-                        counter -= 1
-                    } else if operation == "returnall" {
-                        counter = 1
-                    }else if operation == "nextall" {
-                        counter = 19
-                    }
+        Button(action: {
+            print(counter)
+            if counter != 0 {
+                if operation == "add" {
+                    counter += 1
+                } else if operation == "subtract" {
+                    counter -= 1
+                } else if operation == "returnall" {
+                    counter = 1
+                }else if operation == "nextall" {
+                    counter = 17
                 }
-                
                 scene = "scene\(counter)"
-                print(scene)
-            }){
+            }
+        }){
+            ZStack{
+                Image(iconButton)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: geometry.size.width * 0.06)
+                    .foregroundColor(.white)
+                    .fontWeight(.black)
                 Image(systemName: iconButton)
                     .resizable()
-                    .foregroundColor(.gray)
                     .scaledToFit()
                     .frame(width: geometry.size.width * 0.05)
-            }.frame(maxHeight: .infinity)
+                    .foregroundColor(Color(.orangeApp))
+            }
+        }.frame(maxHeight: .infinity)
             .frame( width: geometry.size.width * 0.05)
-        }
+    }
     
 }
 
