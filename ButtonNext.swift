@@ -12,7 +12,7 @@ struct ButtonNext: View {
     @State var operation: String
     @Binding var scene: String
     @Binding var counter: Int
-    var geometry: GeometryProxy
+    var heightButton: Double
     var body: some View {
         Button(action: {
             print(counter)
@@ -29,21 +29,13 @@ struct ButtonNext: View {
                 scene = "scene\(counter)"
             }
         }){
-            ZStack{
+            HStack{
                 Image(iconButton)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: geometry.size.width * 0.06)
-                    .foregroundColor(.white)
-                    .fontWeight(.black)
-                Image(systemName: iconButton)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: geometry.size.width * 0.05)
-                    .foregroundColor(Color(.orangeApp))
+                    .frame(height: heightButton)
             }
-        }.frame(maxHeight: .infinity)
-            .frame( width: geometry.size.width * 0.05)
+        }
     }
     
 }
