@@ -1,14 +1,12 @@
 import SwiftUI
 
 @main
-struct MyApp: App {
+struct NicknailApp: App {
     @StateObject private var viewModel = GameViewModel()
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack{
-                GameStartView().environmentObject(viewModel)
-            }
+            GameStartView().environmentObject(viewModel)
         }
     }
 }

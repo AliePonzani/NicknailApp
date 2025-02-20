@@ -1,43 +1,36 @@
 import SwiftUI
+import ConfettiSwiftUI
 
-struct ContentView: View {
+struct IntroductionScreen: View {
     @EnvironmentObject var viewModel: GameViewModel
     
-    
-//    @State private var timer: Timer? = nil
-//    
-//    timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-//                        if currentIndex < texts.count - 1 {
-//                            currentIndex += 1 // Avança para o próximo texto
-//                        } else {
-//                            timer?.invalidate() // Para o timer quando todos os textos forem exibidos
-//                        }
-//                    }
-   
+    @State private var index = 1
+    @State private var timer: Timer.TimerPublisher = Timer.publish(every: 1, on: .main, in: .common)
+        
     var body: some View {
         ZStack{
             if viewModel.sceneCounter == 14 {
-                // Exibe as próximas 4 cenas com delay de 1 segundo entre elas
                 VStack {
-                    ForEach(1...5, id: \.self){ index in
-                        Image(viewModel.sceneGame)
-                            .resizable()
-                            .scaledToFill()
-                            .ignoresSafeArea()
-                            .onAppear {
-                                if index == 5 {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 1) {
+                    Image(viewModel.sceneGame)
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea()
+                        .onReceive(timer) { _ in
+                                    if index < 5 {
+                                        print("index é \(index)")
+                                        viewModel.sceneGame = "scene14-\(index)"
+                                        index += 1
+                                    } else {
                                         viewModel.sceneCounter = 15
                                         viewModel.sceneGame = "scene\(viewModel.sceneCounter)"
-                                    }
-                                } else {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 1) {
-                                        self.viewModel.sceneGame = "viewModel.scene14-\(index)"
+                                        timer.connect().cancel()
                                     }
                                 }
-                            }
-                    }
+                                .onAppear {
+                                    let _ = timer.connect()
+                                }
                 }
+                
             } else if viewModel.sceneCounter == 17 {
                 Image(viewModel.sceneGame)
                     .resizable()
@@ -45,7 +38,7 @@ struct ContentView: View {
                     .ignoresSafeArea()
                 VStack(spacing: 25){
                     Button(action: {
-                        viewModel.playGame.toggle()
+                        viewModel.playGame = true
                     }){
                         Text("PLAY")
                             .font(.system(size: 80, weight: .bold, design: .rounded))

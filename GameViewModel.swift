@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class GameViewModel: ObservableObject {
     @Published var playGame:Bool = false
@@ -25,10 +26,29 @@ class GameViewModel: ObservableObject {
     
     @Published var nicknailImage = "nicknail"
     
+    @Published var gameOver = false
+    @Published var newHightScore = false
+    
     @Published var count: Int = 2
     @Published var button1 = 1
     @Published var button2 = 2
     @Published var button3 = 3
+    
+    @Published var orientationIsVertical = false
+    
+    
+    @MainActor
+    func getScreenDimensions() {
+        // Usando UIScreen para pegar as dimensões da tela
+        let screenWidth = UIScreen.main.bounds.width
+        let screenHeight = UIScreen.main.bounds.height
+        
+        if screenHeight > screenWidth {
+            orientationIsVertical = true
+        } else {
+            orientationIsVertical = false
+        }
+    }
     
     func randomizeButtons() {
         let correctAnswer = fibonacciNumbers[count]
@@ -36,8 +56,14 @@ class GameViewModel: ObservableObject {
         
         randomButtons.insert(correctAnswer)
         
+        var startNumber = correctAnswer - 10
+        
+        while startNumber <= 0 {
+            startNumber += 1
+        }
+        
         while randomButtons.count < 3 {
-            let randomValue = Int.random(in: correctAnswer...(correctAnswer + 10))
+            let randomValue = Int.random(in: startNumber...(correctAnswer + 10))
             randomButtons.insert(randomValue)
         }
         
@@ -72,6 +98,7 @@ class GameViewModel: ObservableObject {
     }
     
     func updateHighScore(newHighScore: Int) {
+        
         UserDefaults.standard.set(newHighScore, forKey: "highScore")
         highScore = newHighScore
     }

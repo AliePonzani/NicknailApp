@@ -27,11 +27,14 @@ struct ButtonGame: View {
                 viewModel.randomizeButtons()
                 viewModel.score += 1
             } else {
-                viewModel.score = 0
                 if viewModel.score > viewModel.highScore {
+                    viewModel.newHightScore = true
+                    
                     viewModel.updateHighScore(newHighScore: viewModel.score)
+                    viewModel.score = 0
                 } else {
                     viewModel.nicknailImage = "nicknailSad"
+                    viewModel.gameOver = true
                 }
             }
         }){
