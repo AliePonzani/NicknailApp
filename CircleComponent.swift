@@ -8,8 +8,11 @@
 import SwiftUI
 
 struct CircleComponent: View {
-    @Binding var fibonacciNumbers: [Int]
-    @Binding var rotationCicle: Double
+    @EnvironmentObject var viewModel: GameViewModel
+    
+    private let rotations: [Int] = [-70, -23, 25, 68, 115, 155, 204, 250]
+    private let widties: [Double] = [0.8, 1.07, 1.43, 1.7, 1.7, 1.43, 1.07, 0.8]
+    private let heighties: [Double] = [1.24, 0.88, 0.88, 1.24, 1.76, 2.11, 2.11, 1.76]
     
     var body: some View {
         GeometryReader { geometry in
@@ -20,52 +23,15 @@ struct CircleComponent: View {
                     .frame(width: geometry.size.width * 2.5, height: geometry.size.height * 3)
                     .clipped()
                 
-                //                inserir os numeros no circulo
-                Text("\(fibonacciNumbers[0])")
-                    .font(.system(size: min(geometry.size.width * 0.12, max(geometry.size.width * 0.12 - CGFloat("\(fibonacciNumbers[0])".count) * 10, 12)), weight: .bold, design: .rounded))
-                    .rotationEffect(.degrees(-70))
-                    .position(x: geometry.size.width * 0.82, y: geometry.size.height * 1.24)
+                ForEach(0...7, id: \.self){ index in
+                    
+                    Text("\(viewModel.fibonacciNumbers[index])")
+                        .font(.system(size: min(geometry.size.width * 0.12, max(geometry.size.width * 0.12 - CGFloat("\(viewModel.fibonacciNumbers[index])".count) * 10, 12)), weight: .bold, design: .rounded))
+                        .rotationEffect(.degrees(Double(rotations[index])))
+                        .position(x: geometry.size.width * widties[index], y: geometry.size.height * heighties[index])
+                }
                 
-                
-                
-                
-                Text("\(fibonacciNumbers[1])")
-                    .font(.system(size: min(geometry.size.width * 0.12, max(geometry.size.width * 0.12 - CGFloat("\(fibonacciNumbers[0])".count) * 10, 12)), weight: .bold, design: .rounded))
-                    .rotationEffect(.degrees(-23))
-                    .position(x: geometry.size.width * 1.07, y: geometry.size.height * 0.88)
-                
-                Text("\(fibonacciNumbers[2])")
-                    .font(.system(size: min(geometry.size.width * 0.12, max(geometry.size.width * 0.12 - CGFloat("\(fibonacciNumbers[0])".count) * 10, 12)), weight: .bold, design: .rounded))
-                    .rotationEffect(.degrees(25))
-                    .position(x: geometry.size.width * 1.43, y: geometry.size.height * 0.89)
-                
-                Text("\(fibonacciNumbers[3])")
-                    .font(.system(size: min(geometry.size.width * 0.12, max(geometry.size.width * 0.12 - CGFloat("\(fibonacciNumbers[0])".count) * 10, 12)), weight: .bold, design: .rounded))
-                    .rotationEffect(.degrees(68))
-                    .position(x: geometry.size.width * 1.68, y: geometry.size.height * 1.24)
-                
-                Text("\(fibonacciNumbers[4])")
-                    .font(.system(size: min(geometry.size.width * 0.12, max(geometry.size.width * 0.12 - CGFloat("\(fibonacciNumbers[0])".count) * 10, 12)), weight: .bold, design: .rounded))
-                    .rotationEffect(.degrees(115))
-                    .position(x: geometry.size.width * 1.68, y: geometry.size.height * 1.76)
-                
-                Text("\(fibonacciNumbers[5])")
-                    .font(.system(size: min(geometry.size.width * 0.12, max(geometry.size.width * 0.12 - CGFloat("\(fibonacciNumbers[0])".count) * 10, 12)), weight: .bold, design: .rounded))
-                    .rotationEffect(.degrees(155))
-                    .position(x: geometry.size.width * 1.43, y: geometry.size.height * 2.11)
-                
-                Text("\(fibonacciNumbers[6])")
-                    .font(.system(size: min(geometry.size.width * 0.12, max(geometry.size.width * 0.12 - CGFloat("\(fibonacciNumbers[0])".count) * 10, 12)), weight: .bold, design: .rounded))
-                    .rotationEffect(.degrees(204))
-                    .position(x: geometry.size.width * 1.07, y: geometry.size.height * 2.11)
-                
-                Text("\(fibonacciNumbers[7])")
-                    .font(.system(size: min(geometry.size.width * 0.12, max(geometry.size.width * 0.12 - CGFloat("\(fibonacciNumbers[0])".count) * 10, 12)), weight: .bold, design: .rounded))
-                    .rotationEffect(.degrees(250))
-                    .position(x: geometry.size.width * 0.82, y: geometry.size.height * 1.75)
-                
-                
-            }.rotationEffect(.degrees(rotationCicle), anchor: .center)
+            }.rotationEffect(.degrees(viewModel.rotationCicle), anchor: .center)
                 .position(x: geometry.size.width * 0.95, y: geometry.size.height * 1.21)
         }
     }

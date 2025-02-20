@@ -8,26 +8,15 @@
 import SwiftUI
 
 struct ButtonNext: View {
-    @State var iconButton: String
-    @State var operation: String
-    @Binding var scene: String
-    @Binding var counter: Int
+    @EnvironmentObject var viewModel: GameViewModel
+    
+    var iconButton: String
+    var operation: String
     var heightButton: Double
+    
     var body: some View {
         Button(action: {
-            print(counter)
-            if counter != 0 {
-                if operation == "add" {
-                    counter += 1
-                } else if operation == "subtract" {
-                    counter -= 1
-                } else if operation == "returnall" {
-                    counter = 1
-                }else if operation == "nextall" {
-                    counter = 17
-                }
-                scene = "scene\(counter)"
-            }
+            viewModel.generateScene(operation: operation)
         }){
             HStack{
                 Image(iconButton)
